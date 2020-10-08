@@ -11,13 +11,17 @@ int main()
 	int QuanBytes;
 	cout << " Enter quantity  of bytes" << endl;
 	cin >> QuanBytes;
-	cout << endl;
+	//DWORD T = 100;
+	//cout <<T<< endl;
 	HCRYPTPROV a;
 	CryptAcquireContext(&a, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
 	CryptGenRandom(a, QuanBytes, value);
+	for (int i = 0; i < 100; i++) {
+		cout << i << ". " << value[i] << endl;
+	}
 	HCRYPTPROV b;
-	//CryptAcquireContext(&b, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
-	HCRYPTHASH hashdeskr;													//насколько безлопасно использовать один дескриптор на 2 функции?
+	//CryptAcquireContext(&b, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);    //насколько безлопасно использовать один дескриптор на 2 функции?
+	HCRYPTHASH hashdeskr;													
 	HCRYPTHASH duplhashptr1;
 	HCRYPTHASH duplhashptr2;
 	HCRYPTHASH duplhashptr3;
@@ -31,10 +35,11 @@ int main()
 	CryptDuplicateHash(hashdeskr, NULL, NULL, &duplhashptr2);
 	CryptDuplicateHash(hashdeskr, NULL, NULL, &duplhashptr3);
 	CryptGetHashParam(hashdeskr, HP_ALGID, duplhasharray1, &bytevalue,NULL);
-	cout << duplhasharray1 << endl;
+	cout << duplhasharray1 << "          "<< bytevalue << endl;
 	CryptGetHashParam(duplhashptr1,HP_HASHSIZE , duplhasharray2, &bytevalue, NULL);
-	cout << duplhasharray2 << endl;
-	CryptGetHashParam(duplhashptr1,HP_HASHVAL , duplhasharray3, &bytevalue, NULL);
-	cout << duplhasharray3 << endl;
+	cout << duplhasharray2 << "          " << bytevalue << endl;
+	CryptGetHashParam(duplhashptr2,HP_HASHVAL , duplhasharray3, &bytevalue, NULL);
+	cout << duplhasharray3 << "          " << bytevalue << endl;
+	CryptDestroyHash(duplhashptr3);
 	return 0;
 }
